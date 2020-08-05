@@ -1,0 +1,125 @@
+$colors: [dodgerblue, lavender, orange, aqua, yellow, fuchsia, hotpink, lime, red];
+
+
+* {
+  box-sizing: border-box;
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+#drum-machine {
+  width: 70vw;
+  margin: 100px auto;
+  background: #333;
+  display: flex;
+}
+
+.pads_wrapper {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 65%;
+  display: inline-flex;
+  flex-flow: row wrap;
+  border-right: 3px solid;
+}
+
+.controls {
+  display: inline-flex;
+  flex-direction: row;
+  width: 35%;
+  align-items: flex-start;
+  justify-content: center;
+  background: #333;
+}
+
+.switch {
+  // align-items: center;
+  display: flex;
+  border: 5px solid;
+}
+
+.power_button {
+  width: 200px;
+  margin-top: 4.16666666%;
+  text-align: center;
+  border-radius: 5px;
+  background: darkgrey;
+  display: block;
+  line-height: 5;
+}
+
+.light {
+  width: 50px;
+  height: 50px;
+  background: red;
+  margin: 5px;
+}
+
+.drum-pad {
+  flex-basis: 25%;
+  line-height: 7;
+  margin: 4.16666666%;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 1s linear;
+}
+
+@for $i from 1 through 9 {
+  $color: nth($colors, $i);
+  .active:nth-of-type(#{$i}) {
+    background: #{$color};
+  }
+}
+
+.inactive {
+  background: lavender;
+}
+
+.drum-pad:active {
+  transform: scale(0.995);
+  box-shadow: inset 0px 1px 5px black;
+  font-weight: bold;
+  color: ghostwhite;
+}
+
+
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
