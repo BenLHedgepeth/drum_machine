@@ -101,9 +101,8 @@ body {
 
 .drum-pad:active {
   transform: scale(0.995);
-  box-shadow: inset 0px 3px 5px white;
+  box-shadow: inset 0px 0px 10px 6px white;
   font-weight: bold;
-  color: ghostwhite;
 }
 
 .sound_type {
