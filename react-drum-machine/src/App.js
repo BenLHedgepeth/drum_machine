@@ -1,22 +1,48 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.scss';
-
+import bankOne from './drum_files.js';
 
 class Panel extends React.Component {
 
+  render() {
+    return (
+      <div className="controls">
+        <p className="power_button" onClick={this.props.controls}>Power</p>
+        <p class="sound_type"></p>
+      </div>
+    )
+  }
 }
 
 
 class DrumPad extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.playSound = this.playSound.bind(this);
+  }
+
+  playSound(event) {
+    let pad_id = event.currentTarget.id.replace("'","");
+    let display_title = document.querySelector(".sound_type");
+    let sound_clip = document.querySelector(`#${pad_id} audio`);
+    if (this.props.power) {
+      display_title.innerHTML = pad_id.replace("-", "");
+    } else {
+      display_title.innerHTML = "";
+    }
+
+    sound_clip.play();
+  }
+
   render() {
+    let padSound = this.props.sound;
     let status = this.props.power ? "active" : "inactive";
-    console.log(status);
     return (
-      <li className={`drum-pad ${status}`}>
-        <audio muted={!this.props.power}></audio>
-        {this.props.name}
+      <li key={padSound.keyCode} id={padSound.id.replace("'", "")} className={`drum-pad ${status}`}  onClick={this.playSound}>
+        <audio src={padSound.url} muted={!this.props.power}></audio>
+        {padSound.keyTrigger}
       </li>
     )
   }
@@ -37,28 +63,26 @@ class DrumMachine extends React.Component {
       this.setState((state) => ({
         powerOn: true
       }))
-      event.target.style.boxShadow = "inset 0px 10px 10px red";
+      event.target.style.cssText = "box-shadow: inset 0px 10px 10px red; transform: scale(.95)";
     } else {
       this.setState((state) => ({
         powerOn: false
       }))
-      event.target.style.boxShadow = "none";
+      event.target.style.cssText="box-shadow: none; transform: none";
     }
   }
-  
+
   render() {
-    let items = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C'];
-    let drumPads = items.map((button) => {
-      return <DrumPad name={button} power={this.state.powerOn} />
+    let drumPads = bankOne.map((sound) => {
+      return <DrumPad sound={sound} power={this.state.powerOn} />
     })
-    return (
-      <div id="drum-machine">
+    let machine_on = this.state.powerOn ? "powered" : "";
+  return (
+      <div id="drum-machine" className={machine_on}>
         <ul className="pads_wrapper">
           {drumPads}
         </ul>
-        <div className="controls">
-          <p className="power_button" onClick={this.useMachine}>Power</p>
-        </div>
+        <Panel controls={this.useMachine} />
       </div>
     )
   }
