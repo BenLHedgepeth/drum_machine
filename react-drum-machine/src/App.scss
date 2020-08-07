@@ -47,11 +47,26 @@ body {
   background: #333;
 }
 
-.sound_type {
+.display_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 150px;
   height: 75px;
-  line-height: 3;
+  background: #222;
+}
+
+
+#display {
+  color: red;
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
   text-align: center;
+}
+
+.device_name {
+  color: ghostwhite;
 }
 
 .switch {
@@ -102,12 +117,6 @@ body {
 .drum-pad:active {
   transform: scale(0.995);
   box-shadow: inset 0px 0px 10px 6px white;
-  font-weight: bold;
-}
-
-.sound_type {
-  background: #222;
-  color: red;
   font-weight: bold;
 }
 

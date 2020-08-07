@@ -9,7 +9,10 @@ class Panel extends React.Component {
     return (
       <div className="controls">
         <p className="power_button" onClick={this.props.controls}>Power</p>
-        <p class="sound_type"></p>
+        <div class="display_wrapper">
+          <p id="display"></p>
+        </div>
+        <h2 class="device_name">React Drum Machine</h2>
       </div>
     )
   }
@@ -25,10 +28,10 @@ class DrumPad extends React.Component {
 
   playSound(event) {
     let pad_id = event.currentTarget.id.replace("'","");
-    let display_title = document.querySelector(".sound_type");
+    let display_title = document.querySelector("#display");
     let sound_clip = document.querySelector(`#${pad_id} audio`);
     if (this.props.power) {
-      display_title.innerHTML = pad_id.replace("-", "");
+      display_title.innerHTML = pad_id.replace(/-/g, " ").toUpperCase();
     } else {
       display_title.innerHTML = "";
     }
@@ -59,16 +62,21 @@ class DrumMachine extends React.Component {
   }
 
   useMachine(event) {
+    let brand = document.querySelector(".device_name");
     if (!this.state.powerOn) {
       this.setState((state) => ({
         powerOn: true
       }))
       event.target.style.cssText = "box-shadow: inset 0px 10px 10px red; transform: scale(.95)";
+      brand.style.color="ghostwhite";
     } else {
       this.setState((state) => ({
         powerOn: false
       }))
       event.target.style.cssText="box-shadow: none; transform: none";
+      brand.style.color="grey";
+      let display_title = document.querySelector("#display");
+      display_title.innerHTML = "";
     }
   }
 
@@ -77,15 +85,15 @@ class DrumMachine extends React.Component {
       return <DrumPad sound={sound} power={this.state.powerOn} />
     })
     let machine_on = this.state.powerOn ? "powered" : "";
-  return (
-      <div id="drum-machine" className={machine_on}>
-        <ul className="pads_wrapper">
-          {drumPads}
-        </ul>
-        <Panel controls={this.useMachine} />
-      </div>
-    )
-  }
+    return (
+        <div id="drum-machine" className={machine_on}>
+          <ul className="pads_wrapper">
+            {drumPads}
+          </ul>
+          <Panel controls={this.useMachine} />
+        </div>
+      )
+    }
 }
 
 function App() {
