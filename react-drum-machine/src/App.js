@@ -9,10 +9,10 @@ class Panel extends React.Component {
     return (
       <div className="controls">
         <p className="power_button" onClick={this.props.controls}>Power</p>
-        <div class="display_wrapper">
+        <div className="display_wrapper">
           <p id="display"></p>
         </div>
-        <h2 class="device_name">React Drum Machine</h2>
+        <h2 className="device_name">React Drum Machine</h2>
       </div>
     )
   }
@@ -27,24 +27,22 @@ class DrumPad extends React.Component {
   }
 
   playSound(event) {
-    let pad_id = event.currentTarget.id.replace("'","");
+    let pad = event.currentTarget.firstElementChild;
     let display_title = document.querySelector("#display");
-    let sound_clip = document.querySelector(`#${pad_id} audio`);
     if (this.props.power) {
-      display_title.innerHTML = pad_id.replace(/-/g, " ").toUpperCase();
+      display_title.innerHTML = pad.id.replace(/-/g, " ").toUpperCase();
     } else {
       display_title.innerHTML = "";
     }
-
-    sound_clip.play();
+    pad.play();
   }
 
   render() {
     let padSound = this.props.sound;
     let status = this.props.power ? "active" : "inactive";
     return (
-      <li key={padSound.keyCode} id={padSound.id.replace("'", "")} className={`drum-pad ${status}`}  onClick={this.playSound}>
-        <audio src={padSound.url} muted={!this.props.power}></audio>
+      <li className={`drum-pad ${status}`}  onClick={this.playSound}>
+        <audio id={padSound.id.replace("'", "")} src={padSound.url} muted={!this.props.power}></audio>
         {padSound.keyTrigger}
       </li>
     )
@@ -82,7 +80,7 @@ class DrumMachine extends React.Component {
 
   render() {
     let drumPads = bankOne.map((sound) => {
-      return <DrumPad sound={sound} power={this.state.powerOn} />
+      return <DrumPad key={sound.keyCode} sound={sound} power={this.state.powerOn} />
     })
     let machine_on = this.state.powerOn ? "powered" : "";
     return (
