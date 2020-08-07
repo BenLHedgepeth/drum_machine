@@ -26,11 +26,24 @@ class DrumPad extends React.Component {
     this.playSound = this.playSound.bind(this);
   }
 
-  playSound(event) {
-    let pad = event.currentTarget.firstElementChild;
+  componentDidMount() {
+    window.addEventListener("keydown", (e) => {
+      var key = e.key.toUpperCase();
+      this.playSound(e, key);
+    });
+  }
+
+  playSound(event, key=null) {
+
+    if (event.type === "click") {
+      var pad = event.currentTarget.firstElementChild;
+    } else {
+      var pad = document.getElementById(`${key}`);
+    }
     let display_title = document.querySelector("#display");
     if (this.props.power) {
-      display_title.innerHTML = pad.id.replace(/-/g, " ").toUpperCase();
+      display_title.innerHTML = pad.parentElement.id.replace(/-/g, " ").toUpperCase();
+      pad.parentElement.classList.add("drum-pad:active")
     } else {
       display_title.innerHTML = "";
     }
@@ -41,8 +54,8 @@ class DrumPad extends React.Component {
     let padSound = this.props.sound;
     let status = this.props.power ? "active" : "inactive";
     return (
-      <li className={`drum-pad ${status}`}  onClick={this.playSound}>
-        <audio id={padSound.id.replace("'", "")} src={padSound.url} muted={!this.props.power}></audio>
+      <li id={padSound.id} className={`drum-pad ${status}`} onClick={this.playSound}>
+        <audio id={padSound.keyTrigger} src={padSound.url} muted={!this.props.power}></audio>
         {padSound.keyTrigger}
       </li>
     )
@@ -80,7 +93,7 @@ class DrumMachine extends React.Component {
 
   render() {
     let drumPads = bankOne.map((sound) => {
-      return <DrumPad key={sound.keyCode} sound={sound} power={this.state.powerOn} />
+      return <DrumPad key={sound.keyCode} sound={sound} power={this.state.powerOn}/>
     })
     let machine_on = this.state.powerOn ? "powered" : "";
     return (
