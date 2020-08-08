@@ -120,6 +120,12 @@ body {
   font-weight: bold;
 }
 
+.drum-pad-key-active {
+  transform: scale(0.995);
+  box-shadow: inset 0px 0px 10px 6px white;
+  font-weight: bold;
+}
+
 
 
 @media (prefers-reduced-motion: no-preference) {
