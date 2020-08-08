@@ -29,25 +29,32 @@ class DrumPad extends React.Component {
   componentDidMount() {
     window.addEventListener("keydown", (e) => {
       var key = e.key.toUpperCase();
+      if (!['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C'].includes(key)) {
+        return
+      }
       this.playSound(e, key);
     });
   }
 
   playSound(event, key=null) {
 
-    if (event.type === "click") {
-      var pad = event.currentTarget.firstElementChild;
-    } else {
+    //assign <audio> element to pad
+    if (event.type === "keydown") {
       var pad = document.getElementById(`${key}`);
+      pad.parentElement.classList.add("drum-pad-key-active");
+    } else {
+      var pad = event.currentTarget.firstElementChild;
     }
     let display_title = document.querySelector("#display");
     if (this.props.power) {
       display_title.innerHTML = pad.parentElement.id.replace(/-/g, " ").toUpperCase();
-      pad.parentElement.classList.add("drum-pad:active")
     } else {
       display_title.innerHTML = "";
     }
     pad.play();
+    pad.parentElement.addEventListener("keyup", (e) => {
+      e.currentTarget.classList.remove("drum-pad-key-active");
+    })
   }
 
   render() {
