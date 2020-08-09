@@ -103,29 +103,49 @@ body {
   transition: background-color .5s linear;
 }
 
+@mixin shade($base-color) {
+  background: $base-color;
+  box-shadow: inset 0px 0px 10px 3px darken($base-color, 35%);
+}
+
+/* default pad colors when on */
 @for $i from 1 through 9 {
   $color: nth($colors, $i);
-  .active:nth-of-type(#{$i}) {
-    background: #{$color};
+  .press:nth-of-type(#{$i}) {
+    transition: box-shadow .1s ease-out;
+    @include shade($color);
+
+    &:active {
+      $light-shade: lighten($color, 20%);
+      box-shadow: inset 0px 0px 10px 10px lighten($color, 30%);
+    }
   }
 }
 
-.inactive {
-  background: lavender;
+/* default pad color when off */
+@for $i from 1 through 9 {
+  $color: nth($colors, $i);
+  .release:nth-of-type(#{$i}) {
+    @include shade(lavender);
+  }
 }
 
-.drum-pad:active {
-  transform: scale(0.995);
-  box-shadow: inset 0px 0px 10px 6px white;
-  font-weight: bold;
-}
+/* mouse event */
+// .drum-pad:active {
+//   transform: scale(0.995);
+//   box-shadow: inset 0px 0px 10px 6px white;
+//   font-weight: bold;
+// }
 
-.drum-pad-key-active {
-  transform: scale(0.995);
-  box-shadow: inset 0px 0px 10px 6px white;
-  font-weight: bold;
-}
+/* keyboard press event */
 
+@for $i from 1 through 9 {
+  $color: nth($colors, $i);
+  .drum-pad-key-active:nth-of-type(#{$i}) {
+    $light-shade: lighten($color, 20%);
+    box-shadow: inset 0px 0px 10px 10px lighten($color, 30%);
+  }
+}
 
 
 @media (prefers-reduced-motion: no-preference) {
